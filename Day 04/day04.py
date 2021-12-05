@@ -22,7 +22,7 @@ with open(fileName, 'r') as file:
         if len(board) < 1:
             break
 
-        boards.append(board)
+        boards.append((board, False))
 
 
 def markNumber(board: list, num: int):
@@ -65,14 +65,25 @@ def calcWinScore(board: list, winNumber: int) -> int:
 for i in range(0, 4):
     retrievedNumber = winNums[i]
     for b in boards:
-        markNumber(b, retrievedNumber)
+        markNumber(b[0], retrievedNumber)
+
+winFlag = False
+lastToWin = None
 
 for i in range(4, len(winNums)):
     retrievedNumber = winNums[i]
     for b in boards:
-        markNumber(b, retrievedNumber)
+        markNumber(b[0], retrievedNumber)
 
-    winningBoard = list(filter(lambda b: isWinnerBoard(b), boards))
-    if len(winningBoard) > 0:
-        print(calcWinScore(winningBoard[0], retrievedNumber))
+    winningBoard = list(filter(lambda b: isWinnerBoard(b[0]), boards))
+    if len(winningBoard) > 0 and not winFlag:
+        print(calcWinScore(winningBoard[0][0], retrievedNumber))
+        winFlag = True
+
+    boards = list(filter(lambda b: not isWinnerBoard(b[0]), boards))
+    if len(boards) == 1:
+        lastToWin = boards[0][0]
+
+    if len(boards) == 0:
+        print(calcWinScore(lastToWin, retrievedNumber))
         sys.exit()
