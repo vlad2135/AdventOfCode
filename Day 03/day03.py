@@ -2,10 +2,10 @@ import sys
 import os
 
 os.chdir(sys.path[0])
-fileName = 'input_tst'
+fileName = 'input'
 
-#bitCount = [[0 for x in range(2)] for y in range(12)]
-bitCount = [[0 for x in range(2)] for y in range(5)]
+bitCount = [[0 for x in range(2)] for y in range(12)]
+#bitCount = [[0 for x in range(2)] for y in range(5)]
 numbers = list()
 with open(fileName, 'r') as file:
     for line in file:
@@ -39,20 +39,40 @@ oxyRatingList = numbers.copy()
 co2RatingList = numbers.copy()
 
 posInNum = 0
-while len(oxyRatingList) > 1 or len(co2RatingList) > 1:
+# reinit, just to be clear
+bitCount = [[0 for x in range(2)] for y in range(12)]
+#bitCount = [[0 for x in range(2)] for y in range(5)]
+while len(oxyRatingList) > 1:
     tmpOxy = oxyRatingList.copy()
-    tmpCo2 = co2RatingList.copy()
-    if (len(oxyRatingList)) > 1:
-        oxyRatingList = list(filter(lambda s: filterByPosValue(s, posInNum, gammaRateStr[posInNum]), oxyRatingList))
 
-    if (len(co2RatingList)) > 1:
-        co2RatingList = list(filter(lambda s: filterByPosValue(s, posInNum, epsilonRateStr[posInNum]), co2RatingList))
+    for number in oxyRatingList:
+        bitCount[posInNum][int(number[posInNum])] += 1
+
+    if bitCount[posInNum][0] > bitCount[posInNum][1]:
+        mostCommonVal = '0'
+    else:
+        mostCommonVal = '1'
     
-    if (len(oxyRatingList)) < 1:
-        breakpoint()
+    oxyRatingList = list(filter(lambda s: filterByPosValue(s, posInNum, mostCommonVal), oxyRatingList))
 
-    if (len(co2RatingList)) < 1:
-        breakpoint()
+    posInNum += 1
+
+# reinit, just to be clear
+posInNum = 0
+bitCount = [[0 for x in range(2)] for y in range(12)]
+#bitCount = [[0 for x in range(2)] for y in range(5)]
+while len(co2RatingList) > 1:
+    tmpCo2 = co2RatingList.copy()
+
+    for number in co2RatingList:
+        bitCount[posInNum][int(number[posInNum])] += 1
+
+    if bitCount[posInNum][0] <= bitCount[posInNum][1]:
+        leastCommonVal = '0'
+    else:
+        leastCommonVal = '1'
+    
+    co2RatingList = list(filter(lambda s: filterByPosValue(s, posInNum, leastCommonVal), co2RatingList))
 
     posInNum += 1
 
