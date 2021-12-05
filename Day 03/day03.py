@@ -11,7 +11,7 @@ with open(fileName, 'r') as file:
     for line in file:
         digits = list(line)
         numbers.append(line)
-        for i in range(0, len(digits)-1):
+        for i in range(0, len(digits)):
             bitCount[i][int(digits[i])] += 1
 
 gammaRateStr = ''
