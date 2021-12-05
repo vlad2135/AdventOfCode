@@ -31,10 +31,6 @@ epsilonRate = int(epsilonRateStr, 2)
 print('Power consumption = ', gammaRate * epsilonRate)
 
 
-def filterByPosValue(s: str, pos: int, val: str) -> bool:
-    return s[pos] == val
-
-
 oxyRatingList = numbers.copy()
 co2RatingList = numbers.copy()
 
@@ -52,8 +48,8 @@ while len(oxyRatingList) > 1:
         mostCommonVal = '0'
     else:
         mostCommonVal = '1'
-    
-    oxyRatingList = list(filter(lambda s: filterByPosValue(s, posInNum, mostCommonVal), oxyRatingList))
+
+    oxyRatingList = list(filter(lambda s: s[posInNum] == mostCommonVal, oxyRatingList))
 
     posInNum += 1
 
@@ -71,11 +67,9 @@ while len(co2RatingList) > 1:
         leastCommonVal = '0'
     else:
         leastCommonVal = '1'
-    
-    co2RatingList = list(filter(lambda s: filterByPosValue(s, posInNum, leastCommonVal), co2RatingList))
+
+    co2RatingList = list(filter(lambda s: s[posInNum] == leastCommonVal, co2RatingList))
 
     posInNum += 1
 
 print('Life support rating = ', int(oxyRatingList[0], 2) * int(co2RatingList[0], 2))
-
-
