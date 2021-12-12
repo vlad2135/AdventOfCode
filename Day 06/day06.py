@@ -1,32 +1,29 @@
+from collections import defaultdict
 import sys
 import os
 
 os.chdir(sys.path[0])
 fileName = 'input'
 
-fishTimersInit = []
+fishTimers = []
 with open(fileName, 'r') as file:
-    fishTimersInit = [int(c) for c in file.readline().split(',')]
+    fishTimers = [int(c) for c in file.readline().split(',')]
+
+ftDict = defaultdict(int)
+maxTv = 8
+for ft in fishTimers:
+    ftDict[ft] = ftDict[ft] + 1
 
 dayCnt = 256
-fishTimersCnt = len(fishTimersInit)
 
 while dayCnt > 0:
-    newFishCnt = 0
-    for i in range(0, fishTimersCnt):
-        fishTimers[i] = fishTimers[i] - 1
-        if (fishTimers[i]) < 0:
-            fishTimers[i] = 6
-            newFishCnt += 1
+    for i in range(0, maxTv+1):
+        ftDict[i-1] = ftDict[i]
 
-    if newFishCnt > 0:
-        fishTimers.extend([8] * newFishCnt)
-        fishTimersCnt += newFishCnt
+    ftDict[6] = ftDict[6]+ftDict[-1]
+    ftDict[8] = ftDict[-1]
+    dayCnt-=1
 
-    dayCnt -= 1
-    print(dayCnt)
-    print(fishTimersCnt)
+ftDict[-1] = 0
 
-print()
-print(fishTimersCnt)
-
+print(sum(ftDict.values()))
