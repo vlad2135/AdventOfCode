@@ -6,15 +6,13 @@ fileName = 'input_tst1'
 
 def findContaining(patterns: list, digit: set) -> set:
     for pattern in patterns:
-        patternSet = set(pattern)
-        if digit.issubset(patternSet):
-            return patternSet
+        if digit.issubset(pattern):
+            return pattern
 
 def findNotContaining(patterns: list, digit: set) -> set:
     for pattern in patterns:
-        patternSet = set(pattern)
-        if not digit.issubset(patternSet):
-            return patternSet
+        if not digit.issubset(pattern):
+            return pattern
 
 
 def findDigits(patterns: list) -> dict:
@@ -23,11 +21,11 @@ def findDigits(patterns: list) -> dict:
     seven = set(list(filter(lambda d: len(d)==3, patterns))[0])
     eight = set(list(filter(lambda d: len(d)==7, patterns))[0])
 
-    allSixLen = list(filter(lambda d: len(d) == 6, patterns))
-    six = findNotContaining(allSixLen, one)
-    nine = findContaining(allSixLen, four)
-    allFiveLen = list(filter(lambda d: len(d) == 5, patterns))
-    three = findContaining(allFiveLen, seven)
+    allSixLenSet = list(map( lambda s: set(s), filter(lambda d: len(d) == 6, patterns)))
+    six = findNotContaining(allSixLenSet, one)
+    nine = findContaining(allSixLenSet, four)
+    allFiveLenSet = list(map( lambda s: set(s), filter(lambda d: len(d) == 5, patterns)))
+    three = findContaining(allFiveLenSet, seven)
 
 
 
