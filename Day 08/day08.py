@@ -24,18 +24,30 @@ def findDigits(patterns: list) -> dict:
     allSixLenSet = list(map( lambda s: set(s), filter(lambda d: len(d) == 6, patterns)))
     six = findNotContaining(allSixLenSet, one)
     nine = findContaining(allSixLenSet, four)
+    zero = next(filter(lambda s: s != six and s!= nine, allSixLenSet))
+
     allFiveLenSet = list(map( lambda s: set(s), filter(lambda d: len(d) == 5, patterns)))
     three = findContaining(allFiveLenSet, seven)
-
-
+    twoFive = list(filter(lambda s: s != three, allFiveLenSet))
+    twoOrFive1 = twoFive[0]
+    twoOrFive2 = twoFive[1]
+    if twoOrFive1.issubset(six):
+        five = twoOrFive1
+        two = twoOrFive2
+    else:
+        five = twoOrFive2
+        two = twoOrFive1
 
     print('one', one)
+    print('two', two)
     print('three', three)
     print('four', four)
+    print('five', five)
     print('six', six)
     print('seven', seven)
     print('eight', eight)
     print('nine', nine)
+    print('zero', zero)
 
 
 uniqDigits = 0
