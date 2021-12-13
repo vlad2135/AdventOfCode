@@ -4,10 +4,16 @@ import os
 os.chdir(sys.path[0])
 fileName = 'input_tst1'
 
-def find6(sixLens: list, one: set) -> set:
-    for pattern in sixLens:
+def findContaining(patterns: list, digit: set) -> set:
+    for pattern in patterns:
         patternSet = set(pattern)
-        if not one.issubset(patternSet):
+        if digit.issubset(patternSet):
+            return patternSet
+
+def findNotContaining(patterns: list, digit: set) -> set:
+    for pattern in patterns:
+        patternSet = set(pattern)
+        if not digit.issubset(patternSet):
             return patternSet
 
 
@@ -17,12 +23,21 @@ def findDigits(patterns: list) -> dict:
     seven = set(list(filter(lambda d: len(d)==3, patterns))[0])
     eight = set(list(filter(lambda d: len(d)==7, patterns))[0])
 
-    six = find6(list(filter(lambda d: len(d) == 6, patterns)), one)
+    allSixLen = list(filter(lambda d: len(d) == 6, patterns))
+    six = findNotContaining(allSixLen, one)
+    nine = findContaining(allSixLen, four)
+    allFiveLen = list(filter(lambda d: len(d) == 5, patterns))
+    three = findContaining(allFiveLen, seven)
+
+
+
     print('one', one)
+    print('three', three)
     print('four', four)
+    print('six', six)
     print('seven', seven)
     print('eight', eight)
-    print('six', six)
+    print('nine', nine)
 
 
 uniqDigits = 0
