@@ -1,5 +1,6 @@
 import sys
 import os
+import pdb
 
 os.chdir(sys.path[0])
 fileName = 'input'
@@ -55,7 +56,8 @@ def flashAndCount(cavern: list, alreadyFlashed: list) -> int:
 totalFlashCnt = 0
 
 alreadyFlashed = [[0] * len(cavern[yy]) for yy in range(0, len(cavern))]
-for i in range(0,100):
+i = 0
+while True:
 
     for y in range(0, len(cavern)):
         for x in range(0, len(cavern[y])):
@@ -66,14 +68,21 @@ for i in range(0,100):
     # print('alreadyFlashed:')
     # print('\n'.join([''.join([str(cell) for cell in row]) for row in alreadyFlashed]))
 
+    stepFlashCnt = 0
     for y in range(0, len(cavern)):
         for x in range(0, len(cavern[y])):
             if alreadyFlashed[y][x] == 1:
                 cavern[y][x] = 0
+                stepFlashCnt+=1
                 alreadyFlashed[y][x] = 0
+
+    if stepFlashCnt == len(cavern) * len(cavern[0]):
+        print('first step for all flash = ', i+1)
+        exit()
 
     # print('cavern:')
     # print('\n'.join([''.join([str(cell) for cell in row]) for row in cavern]))
+    i+=1
 
 print(totalFlashCnt)
 
