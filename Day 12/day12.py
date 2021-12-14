@@ -28,14 +28,15 @@ def getPaths(cave, paths, alreadyVisited):
             if cave.islower():
                 alreadyVisited.add(cave)
 
-            yield cave+','+next(getPaths(nextCave, paths, alreadyVisited), 'end')
+            for nextPath in getPaths(nextCave, paths, alreadyVisited):
+                yield cave+','+nextPath
 
     yield 'end'
 
 
 alreadyVisited = set()
 
-for path in getPaths('start', paths, alreadyVisited):
+for path in sorted(getPaths('start', paths, alreadyVisited)):
     print(path)
 
 
