@@ -1,6 +1,5 @@
 import sys
 import os
-import pdb
 
 os.chdir(sys.path[0])
 fileName = 'input'
