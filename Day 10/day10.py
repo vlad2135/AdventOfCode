@@ -5,10 +5,12 @@ import os
 os.chdir(sys.path[0])
 fileName = 'input'
 
-prizeScores = {')': 3, ']': 57, '}': 1197, '>': 25137}
+checkScores = {')': 3, ']': 57, '}': 1197, '>': 25137}
+completeScores = {')': 1, ']': 2, '}': 3, '>': 4}
 totalErrorScore = 0
 openCloseMap = {'(': ')','[': ']','{': '}','<': '>'}
 
+totalCompleteScores = []
 
 with open(fileName, 'r') as file:
     for line in file:
@@ -26,9 +28,19 @@ with open(fileName, 'r') as file:
                         isCorrupted = True
 
             if isCorrupted == True:
-                totalErrorScore += prizeScores[c]
+                totalErrorScore += checkScores[c]
                 break
+
+        if isCorrupted:
+            continue
+
+        totalCompleteScore = 0
+        chunkStack.reverse()
+        for c in chunkStack:
+            totalCompleteScore = totalCompleteScore * 5 + completeScores[c]
+        totalCompleteScores.append(totalCompleteScore)
 
 print(totalErrorScore)
 
-
+totalCompleteScores.sort()
+print(totalCompleteScores[int(len(totalCompleteScores)/2)])
