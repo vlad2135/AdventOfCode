@@ -1,9 +1,42 @@
 import sys
 import os
+from collections import defaultdict
 
 os.chdir(sys.path[0])
-fileName = 'input'
+fileName = 'input_tst'
+
+paths = defaultdict(list)
 
 with open(fileName, 'r') as file:
     for line in file:
-        pass
+        (cA, cB) = line.strip().split('-')
+        if cA != 'end' and cB != 'start':
+            paths[cA].append(cB)
+        if cB != 'end' and cA != 'start':
+            paths[cB].append(cA)
+
+
+def getPaths(cave, paths, alreadyVisited):
+    # implement generator here
+    for nextCave in paths[cave]:
+        if nextCave in alreadyVisited:
+            continue
+
+        if nextCave=='end':
+            yield cave+','+nextCave
+        else:
+            if cave.islower():
+                alreadyVisited.add(cave)
+
+            yield cave+','+next(getPaths(nextCave, paths, alreadyVisited), 'end')
+
+    yield 'end'
+
+
+alreadyVisited = set()
+
+for path in getPaths('start', paths, alreadyVisited):
+    print(path)
+
+
+
