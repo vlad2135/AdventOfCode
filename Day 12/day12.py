@@ -3,7 +3,7 @@ import os
 from collections import defaultdict
 
 os.chdir(sys.path[0])
-fileName = 'input_tst'
+fileName = 'input'
 
 paths = defaultdict(list)
 
@@ -33,11 +33,35 @@ def getPaths(cave, paths, alreadyVisited):
 
     yield 'end'
 
+def getPaths2(cave: str, paths: defaultdict, alreadyVisited: set) -> list[list]:
+    totalPaths = []
+    if cave == 'end':
+        return [[cave]]
+
+    for nextCave in paths[cave]:
+        currPath = [cave]
+        if nextCave in alreadyVisited:
+            continue
+
+        if cave.islower() and cave != 'end':
+            alreadyVisited.add(cave)
+
+        nextPaths = getPaths2(nextCave, paths, alreadyVisited.copy())
+        if nextPaths is None or len(nextPaths) == 0:
+            continue
+        for nextPath in nextPaths:
+            if nextPath[-1] == 'end':
+                currPath.extend(nextPath)
+                totalPaths.append(currPath)
+                currPath = [cave]
+
+    return totalPaths
+        
 
 alreadyVisited = set()
 
-for path in sorted(getPaths('start', paths, alreadyVisited)):
+paths = getPaths2('start', paths, alreadyVisited)
+for path in paths:
     print(path)
 
-
-
+print(len(paths))
