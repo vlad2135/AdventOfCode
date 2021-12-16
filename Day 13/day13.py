@@ -21,7 +21,7 @@ with open(fileName, 'r') as file:
             (coord, val) = data.split('=')
             instructions.append([coord, int(val)])
 
-for instr in instructions[0:1]:
+for instr in instructions:#[0:1]:
     newDots = set()
     for dot in dots:
         if instr[0] == 'y':
@@ -31,5 +31,16 @@ for instr in instructions[0:1]:
     dots = newDots
 
 print(len(dots))
+
+matrix = [[' '] * 41 for yy in range(0, 8)]
+
+for dot in dots:
+    matrix[dot[1]][dot[0]] = 'x'
+
+for y in range(0, len(matrix)):
+    for x in range(0, len(matrix[y])):
+        print(matrix[y][x],end='')
+    print()
+
 
 
