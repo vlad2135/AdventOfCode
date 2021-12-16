@@ -16,23 +16,6 @@ with open(fileName, 'r') as file:
             paths[cB].append(cA)
 
 
-def getPaths(cave, paths, alreadyVisited):
-    # implement generator here
-    for nextCave in paths[cave]:
-        if nextCave in alreadyVisited:
-            continue
-
-        if nextCave=='end':
-            yield cave+','+nextCave
-        else:
-            if cave.islower():
-                alreadyVisited.add(cave)
-
-            for nextPath in getPaths(nextCave, paths, alreadyVisited):
-                yield cave+','+nextPath
-
-    yield 'end'
-
 def getPaths2(cave: str, paths: defaultdict, alreadyVisited: set) -> list[list]:
     totalPaths = []
     if cave == 'end':
