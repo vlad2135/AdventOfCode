@@ -16,20 +16,23 @@ with open(fileName, 'r') as file:
             paths[cB].append(cA)
 
 
-def getPaths2(cave: str, paths: defaultdict, alreadyVisited: set) -> list[list]:
+def getPaths(cave: str, paths: defaultdict, visited1: set, visited2: str) -> list[list]:
     totalPaths = []
     if cave == 'end':
         return [[cave]]
 
+    if cave.islower() and cave != 'end':
+        if cave in visited1 and visited2 == None:
+            visited2 = cave
+        else:
+            visited1.add(cave)
+
     for nextCave in paths[cave]:
         currPath = [cave]
-        if nextCave in alreadyVisited:
+        if visited2 != None and nextCave in visited1:
             continue
 
-        if cave.islower() and cave != 'end':
-            alreadyVisited.add(cave)
-
-        nextPaths = getPaths2(nextCave, paths, alreadyVisited.copy())
+        nextPaths = getPaths(nextCave, paths, visited1.copy(), visited2)
         if nextPaths is None or len(nextPaths) == 0:
             continue
         for nextPath in nextPaths:
@@ -41,9 +44,10 @@ def getPaths2(cave: str, paths: defaultdict, alreadyVisited: set) -> list[list]:
     return totalPaths
         
 
-alreadyVisited = set()
+visited1 = set()
+visited2 = None
 
-paths = getPaths2('start', paths, alreadyVisited)
+paths = getPaths('start', paths, visited1, visited2)
 for path in paths:
     print(path)
 
