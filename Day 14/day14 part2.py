@@ -41,6 +41,8 @@ for i in range(0,40):
 
         currPairCnt = pairCnt[pair]
         newPairCnt[pair] = newPairCnt[pair] - currPairCnt
+        if newPairCnt[pair] < 0:
+            newPairCnt[pair] = 0
 
         newPairCnt[newPair1] = newPairCnt[newPair1] + currPairCnt
         newPairCnt[newPair2] = newPairCnt[newPair2] + currPairCnt
