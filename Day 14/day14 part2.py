@@ -4,7 +4,7 @@ import os
 from copy import deepcopy
 
 os.chdir(sys.path[0])
-fileName = 'input_tst'
+fileName = 'input'
 
 rules = {}
 
@@ -27,7 +27,7 @@ for i in range(0,len(polymer)-1):
 
 print(pairCnt)
 
-for i in range(0,2):
+for i in range(0,40):
     newPairCnt = defaultdict(int)
     for pair in pairCnt:
         newPairCnt[pair] = pairCnt[pair]
@@ -36,28 +36,20 @@ for i in range(0,2):
         if not pair in rules or pairCnt[pair]<=0:
             continue
 
-        for N in range(0,pairCnt[pair]):
-            newPair1 = pair[0]+rules[pair]
-            newPair2 = rules[pair]+pair[1]
-            newPairCnt[pair] = pairCnt[pair] - 1
-            # if newPairCnt[pair] < 0:
-            #     newPairCnt[pair] = 0
+        newPair1 = pair[0]+rules[pair]
+        newPair2 = rules[pair]+pair[1]
 
-            if newPair1 in pairCnt:
-                newPairCnt[newPair1] = pairCnt[newPair1] + 1
-            else:
-                newPairCnt[newPair1] = 1
+        currPairCnt = pairCnt[pair]
+        newPairCnt[pair] = newPairCnt[pair] - currPairCnt
 
-            if newPair2 in pairCnt:
-                newPairCnt[newPair2] = pairCnt[newPair2] + 1
-            else:
-                newPairCnt[newPair2] = 1
+        newPairCnt[newPair1] = newPairCnt[newPair1] + currPairCnt
+        newPairCnt[newPair2] = newPairCnt[newPair2] + currPairCnt
 
     pairCnt = newPairCnt
         
 
 print()
-print(pairCnt)
+# print(pairCnt)
 charCnt = defaultdict(int)
 for pair in pairCnt:
     if pairCnt[pair] <=0:
@@ -65,7 +57,7 @@ for pair in pairCnt:
     charCnt[pair[0]] = charCnt[pair[0]] + pairCnt[pair]
 
 charCnt[polymer[len(polymer)-1]] = charCnt[polymer[len(polymer)-1]] + 1
-print(charCnt)
+# print(charCnt)
 
 minOccur = min(charCnt.values())
 maxOccur = max(charCnt.values())
