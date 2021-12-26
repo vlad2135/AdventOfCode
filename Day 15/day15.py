@@ -4,7 +4,7 @@ import os
 import more_itertools
 
 os.chdir(sys.path[0])
-fileName = 'input'
+fileName = 'input_tst'
 
 riskMap = []
 totalRiskMap = []
@@ -31,7 +31,7 @@ def getNearestNotvisited(x, y, visitedMap):
                 (dx == 0 and dy == 0) or
                 (y+dy < 0 or y+dy >= len(visitedMap)) or
                 (x+dx < 0 or x+dx >= len(visitedMap[0])) or
-                    (visitedMap[y+dy][x+dx])):
+                (visitedMap[y+dy][x+dx])):
                 continue
             nvList.append((x+dx, y+dy))
 
@@ -48,9 +48,8 @@ while x != len(riskMap[0])-1 or y != len(riskMap)-1:
             totalRiskMap[nY][nX] = nRisk
 
     if len(nearestNotVisited) > 0:
-        nnvGlobalRisks = [(totalRiskMap[y][x], x, y)
-                          for (x, y) in nearestNotVisited]
-        nnvgrReverseSorted = sorted(nnvGlobalRisks, key=lambda t: t[0])
+        nnvGlobalRisks = [(totalRiskMap[y][x], x, y) for (x, y) in nearestNotVisited]
+        nnvgrReverseSorted = sorted(nnvGlobalRisks, key=lambda t: t[0], reverse=True)
         for t in nnvgrReverseSorted:
             nextVisitQueue.append((t[1], t[2]))
 
