@@ -1,10 +1,8 @@
-from collections import defaultdict
 import sys
 import os
-import more_itertools
 
 os.chdir(sys.path[0])
-fileName = 'input_tst'
+fileName = 'input'
 
 riskMap = []
 totalRiskMap = []
@@ -49,12 +47,17 @@ while x != len(riskMap[0])-1 or y != len(riskMap)-1:
 
     if len(nearestNotVisited) > 0:
         nnvGlobalRisks = [(totalRiskMap[y][x], x, y) for (x, y) in nearestNotVisited]
-        nnvgrReverseSorted = sorted(nnvGlobalRisks, key=lambda t: t[0], reverse=True)
-        for t in nnvgrReverseSorted:
-            nextVisitQueue.append((t[1], t[2]))
+        nextVisitQueue.extend(nnvGlobalRisks)
+        nextVisitQueue = sorted(nextVisitQueue, key=lambda t: t[0], reverse=True)
 
     visitedMap[y][x] = True
-    (x, y) = nextVisitQueue.pop()
+    while True:
+        (_, x, y) = nextVisitQueue.pop()
+        if not visitedMap[y][x]:
+            break
+
+    print('next visit queue len = ', len(nextVisitQueue))
+    print('curr x=',x,' and y=',y)
 
 print(totalRiskMap[len(riskMap)-1][len(riskMap[0])-1])
 # print('\n'.join([''.join([str(cell) for cell in row]) for row in visitedMap]))
