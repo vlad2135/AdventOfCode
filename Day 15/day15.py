@@ -2,7 +2,7 @@ import sys
 import os
 
 os.chdir(sys.path[0])
-fileName = 'input_tst'
+fileName = 'input'
 
 riskMap = []
 totalRiskMap = []
