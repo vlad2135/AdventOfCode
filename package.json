@@ -1,0 +1,24 @@
+{
+  "name": "adventofcode",
+  "version": "2022.0.0",
+  "type": "module",
+  "description": "Advent of Code, all years all languages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vlad2135/AdventOfCode.git"
+  },
+  "keywords": [
+    "AoC",
+    "AdventOfCode"
+  ],
+  "author": "Vladimir Bukreev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vlad2135/AdventOfCode/issues"
+  },
+  "homepage": "https://github.com/vlad2135/AdventOfCode#readme"
+}
