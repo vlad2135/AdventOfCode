@@ -3,9 +3,9 @@ let outcomeScore = { 'X': 0, 'Y': 3, 'Z': 6};
 let choise2win = 
 {
     'A': { 
-        'X': 'paper',
+        'X': 'scissors',
         'Y': 'rock',
-        'Z': 'scissors'
+        'Z': 'paper'
     },
     'B': {
         'X': 'rock',
