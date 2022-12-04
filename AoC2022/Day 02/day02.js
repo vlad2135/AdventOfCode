@@ -1,20 +1,21 @@
-let choiceScore = { 'X': 1, 'Y': 2, 'Z': 3};
-let outcomeScores = 
+let choiceScore = { 'rock': 1, 'paper': 2, 'scissors': 3};
+let outcomeScore = { 'X': 0, 'Y': 3, 'Z': 6};
+let choise2win = 
 {
-    'A': {
-        'X': 3,
-        'Y': 6,
-        'Z': 0
+    'A': { 
+        'X': 'paper',
+        'Y': 'rock',
+        'Z': 'scissors'
     },
     'B': {
-        'X': 0,
-        'Y': 3,
-        'Z': 6
+        'X': 'rock',
+        'Y': 'paper',
+        'Z': 'scissors'
     },
     'C': {
-        'X': 6,
-        'Y': 0,
-        'Z': 3
+        'X': 'paper',
+        'Y': 'scissors',
+        'Z': 'rock'
     }
 }
 
@@ -26,7 +27,7 @@ const lineRead = readline.createInterface({ input: inputStream});
 
 let totalScore = 0;
 for await (const line of lineRead){
-    let [oppChoice, myChoice] = line.trim().split(' ');
-    totalScore += outcomeScores[oppChoice][myChoice] + choiceScore[myChoice];
+    let [oppChoice, outcome] = line.trim().split(' ');
+    totalScore += choiceScore[choise2win[oppChoice][outcome]] + outcomeScore[outcome];
 }
 console.log(totalScore);
