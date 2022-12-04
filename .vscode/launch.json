@@ -7,12 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch day01",
+            "name": "Launch current file",
             "console": "integratedTerminal",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\AoC2022\\Day 01\\day01.js",
+            "program": "${file}",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
