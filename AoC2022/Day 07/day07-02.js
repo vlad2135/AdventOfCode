@@ -57,7 +57,7 @@ const dirSizes = [];
 const usedSpace = getFolderSize('/', lines, dirSizes);
 const requiredCleanupSize = 30000000 - (70000000 - usedSpace);
 
-dirSizes.sort((a,b) => b - a);
+dirSizes.sort((a,b) => a - b);
 for (let size of dirSizes) {
     if (size >= requiredCleanupSize) {
         console.log(size);
