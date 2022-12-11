@@ -11,21 +11,14 @@ for (let y = 0; y < lines.length; y++) {
 
 const visible = [];
 const sideLen = trees.length;
-for (let y = 0; y < trees.length; y++) {
+for (let y = 0; y < sideLen; y++) {
     let currHrowLeft = -1;
     let currHrowRight = -1;
-    let currHrowTop = -1;
-    let currHrowBottom = -1;
 
     visible[y] = Array(sideLen).fill(false);
-    if (visible[sideLen - y - 1] === undefined) {
-        visible[sideLen - y - 1] = Array(sideLen).fill(false);
-    }
 
     let stopOnLeft = false;
     let stopOnRight = false;
-    let stopOnTop = false;
-    let stopOnBottom = false;
     for (let x = 0; x < sideLen; x++) {
 
         if (!stopOnLeft && trees[y][x] > currHrowLeft) {
@@ -40,27 +33,44 @@ for (let y = 0; y < trees.length; y++) {
         }
         else { stopOnRight = true; }
 
-        // vertical direction, using the fact that field is square
-        if (!stopOnTop && trees[x][y] > currHrowTop) {
-            visible[x][y] = true;
-            currHrowTop = trees[x][y];
+        if (stopOnLeft && stopOnRight) {
+            break;
+        }
+    }
+}
+
+for (let x = 0; x < sideLen; x++) {
+    let currHrowTop = -1;
+    let currHrowBottom = -1;
+
+    let stopOnTop = false;
+    let stopOnBottom = false;
+    for (let y = 0; y < sideLen; y++) {
+
+        if (!stopOnTop && trees[y][x] > currHrowTop) {
+            visible[y][x] = true;
+            currHrowTop = trees[y][x];
         }
         else { stopOnTop = true; }
 
-        if (!stopOnBottom && trees[sideLen - x - 1][y] > currHrowBottom) {
-            visible[sideLen - x - 1][y] = true;
-            currHrowBottom = trees[sideLen - x - 1][y];
+        if (!stopOnBottom && trees[sideLen - y - 1][x] > currHrowBottom) {
+            visible[sideLen - y - 1][x] = true;
+            currHrowBottom = trees[sideLen - y - 1][x];
         }
         else { stopOnBottom = true; }
 
-        if (stopOnLeft && stopOnRight && stopOnTop && stopOnBottom) {
+        if (stopOnTop && stopOnBottom) {
             break;
         }
     }
 }
 // console.log(visible.reduce((a,v) => a + v.reduce((ia, iv) => ia + iv ? 1: 0, 0), 0));
+let totalVis = 0;
 for (let y = 0; y < sideLen; y++) {
     console.log(visible[y].map(b => b == true ? '1': '0').join(''));
-    // console.log(visible[y].reduce((a,v) => a + (v ? 1: 0), 0));
+    let currVis = visible[y].reduce((a,v) => a + (v ? 1: 0), 0);
+    console.log(currVis);
+    totalVis += currVis;
 }
+console.log(totalVis);
 
