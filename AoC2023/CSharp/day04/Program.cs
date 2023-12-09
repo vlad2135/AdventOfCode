@@ -1,8 +1,11 @@
 ﻿string[] lines = File.ReadAllLines(@"..\..\..\input4.txt");
 
-long points = 0;
+long wonCardsCnt = 0;
+int[] applyCount = new int[lines.Length];
+Array.Fill(applyCount, 1);
 
-foreach (var line in lines) {
+for (int i = 0; i < lines.Length; i++) {
+    var line = lines[i];
     var p = line.Split(':', StringSplitOptions.TrimEntries); 
 
     var numbers = p[1].Split('|', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
@@ -22,8 +25,16 @@ foreach (var line in lines) {
 
     if (winCount > 0)
     {
-        points += (int)Math.Pow(2, winCount - 1);
+        for (int j = i+1; j < i+1+winCount; j++)
+        {
+            applyCount[j] = applyCount[j]*2;
+        }
+        Console.WriteLine($"Card N{i} has {winCount} wins * {applyCount[i]} times");
+        wonCardsCnt += winCount * applyCount[i];
+    }
+    else {
+        Console.WriteLine($"Card N{i+1} did not won anything");
     }
 }
 
-Console.WriteLine(points);
+Console.WriteLine(wonCardsCnt + lines.Length);
