@@ -4,23 +4,95 @@ using System.Text;
 
 internal class Program
 {
-    static string test = @"...846................132.49........308..........................=............50.....*..............*........+.....+...............59.......A";
-    static string[] linesTest = [
-        @"........................................................862...........20.............453...619......58........694...312.................292.",
-        @"...846................132.49........308..........................=............50.....*..............*........+.....+...............59.......",
-        @"........../46....140.......*............735......852&..706.....860...............297.459..........998................661..418.883.......+..."
-    ];
     static char[] numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     static char[] numsAndDot = numbers.Append('.').ToArray();
     private static void Main2(string[] args)
     {
-        (int num, int endIdx) = GetNextNumber(linesTest[1], 26);
-        Console.WriteLine(IsAdjacentToSymbol(linesTest, 1, endIdx - num.ToString().Length, endIdx));
+        // (int num, int endIdx) = GetNextNumber(linesTest[1], 26);
+        // Console.WriteLine(IsAdjacentToSymbol(linesTest, 1, endIdx - num.ToString().Length, endIdx));
+        PrintANumber(@"...156...", 5);
+        PrintANumber(@"...156", 5);
+        PrintANumber(@"156", 0);
+        PrintANumber(@"156..", 0);
+        PrintANumber(@"156", 1);
+        PrintANumber(@"156..", 1);
+        PrintANumber(@"156", 2);
+    }
+
+    private static void PrintANumber(string str, int pos) {
+        Console.WriteLine($"For line '{str}' and pos '{pos}' number is '{GetNumberFromPos(str, pos)}'.");
     }
     private static void Main(string[] args)
     {
         var lines = File.ReadAllLines(@"..\..\..\input3.txt");
-        Console.WriteLine(lines.Length);
+        long gearRatioSum = 0;
+        // Is there a faster way to iterate through line NUMBERS?
+        for (int lineNum = 0; lineNum < lines.Length; lineNum++) {
+            foreach (int gearIdx in GetGearIndexes(lines[lineNum]))
+            {
+                int[] adjacentPartNums = GetAjacentPartNums(lines, lineNum, gearIdx);
+                if (adjacentPartNums.Length != 2) {
+                    continue;
+                }
+                gearRatioSum += adjacentPartNums[0] * adjacentPartNums[1];
+            }
+        }
+        Console.WriteLine(gearRatioSum); 
+
+    }
+
+    private static int[] GetAjacentPartNums(string[] lines, int lineNum, int gearIdx)
+    {
+        List<int> adjacentPartNums = new List<int>();
+
+        for (int lNum = Math.Max(lineNum - 1, 0); lNum <= Math.Min(lineNum + 1, lines.Length-1); lNum++)
+        {
+            bool isNeedDotOrAsterisk = false;
+            for (int idx = Math.Max(gearIdx - 1, 0); idx <= Math.Min(gearIdx+1, lines[lNum].Length-1); idx++) {
+                if (lNum == lineNum && idx == gearIdx)
+                {
+                    isNeedDotOrAsterisk = false;
+                    continue;
+                }
+
+                if (!isNeedDotOrAsterisk && numbers.Contains(lines[lNum][idx])) {
+                    adjacentPartNums.Add(GetNumberFromPos(lines[lNum], idx));
+                    isNeedDotOrAsterisk = true;
+                }
+                else if (lines[lNum][idx] == '.') {
+                    isNeedDotOrAsterisk = false;
+                }
+            }
+        }
+
+        return adjacentPartNums.ToArray();
+    }
+
+    private static int GetNumberFromPos(string line, int idx)
+    {
+        int startIdx = idx;
+        while (--startIdx >=0 && numbers.Contains(line[startIdx]));
+        startIdx++;
+        int endIdx = startIdx;
+        while (++endIdx < line.Length && numbers.Contains(line[endIdx]));
+        endIdx--;
+
+        return Int32.Parse(line.Substring(startIdx, endIdx-startIdx+1));
+    }
+
+    private static IEnumerable<int> GetGearIndexes(string str)
+    {
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (str[i] == '*') {
+                yield return i;
+            }
+        }
+    }
+
+    private static void MainPart1(string[] args)
+    {
+        var lines = File.ReadAllLines(@"..\..\..\input3.txt");
         int partNumSum = 0;
 
         for (int i = 0; i < lines.Length; i++)
@@ -56,8 +128,7 @@ internal class Program
         StringBuilder sb = new StringBuilder();
         sb.Append(line[numStartIdx]);
         int currIdx = numStartIdx + 1;
-        while (currIdx < line.Length &&
-               numbers.Any(n => n == line[currIdx])) 
+        while (currIdx < line.Length && numbers.Contains(line[currIdx])) 
         {
             sb.Append(line[currIdx++]);
         }
