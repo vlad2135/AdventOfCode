@@ -17,3 +17,25 @@ for (int i = 0; i < list1.Count; i++)
     dist += Math.Max(list1[i], list2[i]) - Math.Min(list1[i], list2[i]);
 }
 Console.WriteLine(dist);
+// Part 2
+double similarity = 0;
+
+foreach (int l1v in list1)
+{
+    // int pos = list2.BinarySearch(l1v);
+    int pos = list2.FindIndex((v) => v == l1v);
+    if (pos < 0)
+        continue;
+    
+    int occurences = 1;
+    int followingPos = pos + 1;
+    while (followingPos < list2.Count && list2[followingPos] == l1v)
+    {
+        occurences++;
+        followingPos++;
+    }
+
+    similarity += l1v * occurences;
+}
+
+Console.WriteLine(similarity);
