@@ -17,10 +17,16 @@ await foreach (var line in File.ReadLinesAsync(@"..\..\..\input.txt"))
     }
     else
     {
-        addedMiddleNumbers += GetMiddleOfCorrectUpdate(line.Split(",").Select(Int32.Parse).ToList());
+        // addedMiddleNumbers += GetMiddleOfCorrectUpdate(line.Split(",").Select(Int32.Parse).ToList());
+        var update = line.Split(",").Select(Int32.Parse).ToList();
+        if (IsInCorrectOrder(update))
+        {
+            continue;
+        }
+        addedMiddleNumbers += GetMiddleOfCorrectedUpdate(update);
     }
-
 }
+
 Console.WriteLine(addedMiddleNumbers);
 
 void AddToRules(int before, int after)
@@ -40,6 +46,11 @@ void AddToRules(int before, int after)
 
 int GetMiddleOfCorrectUpdate(List<int> update)
 {
+    return IsInCorrectOrder(update) ? update[update.Count / 2] : 0;
+}
+
+bool IsInCorrectOrder(List<int> update)
+{
     bool isRightOrder = true;
     for (int i = 0; i < update.Count; i++)
     {
@@ -54,5 +65,39 @@ int GetMiddleOfCorrectUpdate(List<int> update)
             break;
         }
     }
-    return isRightOrder ? update[update.Count / 2] : 0;
+    return isRightOrder;
+}
+
+int GetMiddleOfCorrectedUpdate(List<int> update)
+{
+    do {
+        List<int> nextIterUpdate = update.ToList();
+        for (int i = 0; i < update.Count; i++)
+        {
+            var moveFromAfterToBefore = rules[update[i]].before.Intersect(update.GetRange(i, update.Count - i));
+            foreach (var number in moveFromAfterToBefore)
+            {
+                nextIterUpdate.Remove(number);
+                nextIterUpdate.Insert(0, number);
+            }
+            if (moveFromAfterToBefore.Any())
+            {
+                break;
+            }
+            var moveFromBeforeToAfter = rules[update[i]].after.Intersect(update.GetRange(0, i));
+            foreach (var number in moveFromBeforeToAfter)
+            {
+                nextIterUpdate.Remove(number);
+                nextIterUpdate.Add(number);
+                break;
+            }
+            if (moveFromBeforeToAfter.Any())
+            {
+                break;
+            }
+        }
+        update = nextIterUpdate;
+    } while (!IsInCorrectOrder(update));
+
+    return update[update.Count / 2];
 }
